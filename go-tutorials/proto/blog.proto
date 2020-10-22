@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+option go_package = "proto;blog";
+
+// define message
+message Blog {
+    string id = 1;
+    string author_id = 2;
+    string title = 3;
+    string content = 4;
+}
+
+// create operation request
+message CreateBlogRequest {
+    Blog blog = 1;
+}
+// create operation response
+message CreateBlogResponse {
+    Blog blog = 1;
+}
+
+// query operation request
+message GetBlogRequest {
+    string id = 1;
+}
+// query operation response
+message GetBlogResponse {
+    Blog blog = 1;
+}
+
+// update operation request
+message UpdateBlogRequest {
+    Blog blog = 1;
+}
+// update operation response
+message UpdateBlogResponse {
+    Blog blog = 1;
+}
+
+// delete operation request
+message DeleteBlogRequest {
+    string id = 1;
+}
+// delete operation response
+message DeleteBlogResponse {
+    bool success = 1;
+}
+
+// query blog list request
+message ListBlogsRequest {
+}
+// query blog list response
+message ListBlogsResponse {
+   repeated Blog blog = 1;
+}
+
+// define rpc service
+service BlogService {
+    rpc CreateBlog (CreateBlogRequest) returns (CreateBlogResponse);
+    rpc GetBlog (GetBlogRequest) returns (GetBlogResponse);
+    rpc UpdateBlog (UpdateBlogRequest) returns (UpdateBlogResponse);
+    rpc DeleteBlog (DeleteBlogRequest) returns (DeleteBlogResponse);
+    rpc ListBlogs (ListBlogsRequest) returns (stream ListBlogsResponse);
+}
