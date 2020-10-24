@@ -10,7 +10,6 @@ mongodb:
   command: mongod --auth
   environment:
     TZ: Asia/Shanghai
-
     MONGO_INITDB_ROOT_USERNAME: root
     MONGO_INITDB_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
 

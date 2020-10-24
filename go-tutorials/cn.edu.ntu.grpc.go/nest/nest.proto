@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package nest;
+option go_package = ".;nestpb";
+
+message DepartmentMessage {
+  int32 id =1;
+  string name = 2;
+  repeated EmployeeMessage employees = 3;
+  DepartmentMessage parent_department = 4;
+  repeated DepartmentMessage child_departments = 5;
+}
+
+message EmployeeMessage{
+  int32 id =1;
+  string name = 2;
+}
+
+
+

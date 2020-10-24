@@ -1,7 +1,7 @@
 package config
 
 import (
-	blogpb "cn.edu.ntu.grpc.go/proto"
+	blogpb "cn.edu.ntu.grpc.go/mongo/proto"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 	"log"

@@ -22,6 +22,8 @@ out
 # Log file
 *.log
 
+**/*.bin
+
 # BlueJ files
 *.ctxt
 
@@ -44,6 +46,7 @@ out
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 
+**/*.user
 log
 /log/
 target
@@ -218,9 +221,9 @@ obj/
 .vscode/
 *.elf
 
-# Fortran module files
-*.mod
-*.smod
+# # Fortran module files
+# *.mod
+# *.smod
 
 # Linker output
 *.ilk
@@ -259,8 +262,8 @@ obj/
 *.pdb
 
 # Kernel Module Compile Results
-*.mod*
-*.cmd
+# *.mod*
+# *.cmd
 .tmp_versions/
 modules.order
 Module.symvers

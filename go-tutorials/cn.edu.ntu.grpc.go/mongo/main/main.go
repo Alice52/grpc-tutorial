@@ -1,8 +1,8 @@
 package main
 
 import (
-	"cn.edu.ntu.grpc.go/model"
-	blogpb "cn.edu.ntu.grpc.go/proto"
+	"cn.edu.ntu.grpc.go/mongo/model"
+	blogpb "cn.edu.ntu.grpc.go/mongo/proto"
 	"context"
 	"fmt"
 	"go.mongodb.org/mongo-driver/bson"

@@ -1,7 +1,7 @@
 package main
 
 import (
-	blogpb "cn.edu.ntu.grpc.go/proto"
+	blogpb "cn.edu.ntu.grpc.go/mongo/proto"
 	"context"
 	"google.golang.org/grpc"
 	"io"
