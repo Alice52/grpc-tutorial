@@ -17,3 +17,15 @@
         // import: google/protobuf/timestamp.proto
         // so E:/dev/Go/include/protobuf/src/google/protobuf/timestamp.proto file is existence.
         ```
+      
+2. During actual development, the client and server are completely independent
+    
+    - proto
+    - model
+    - certs
+    
+3. issue list: // TODO:
+    
+    - certs and key are not worked properly
+    - ~~InsertedID will be binary data.~~: please use official lib
+    - cannot use `*pb.EmployeeResponse` as master in **Dto2Model** method

@@ -28,3 +28,12 @@
     - Regular Go Struct 
     - Convert to BSON + Mongo Action 
     - Protobuf Message (Response)   
+
+5. security
+    
+   ```shell
+    # https://blog.csdn.net/weixin_30531261/article/details/80891360
+    openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365 -nodes -subj "//CN=localhost"
+    ```
+   
+   - [concept](https://blog.csdn.net/earbao/article/details/82958518)
