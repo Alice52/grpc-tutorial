@@ -1,0 +1,89 @@
+buildscript {
+    ext {
+        kotlin_version = '1.9.0'
+    }
+    repositories {
+        maven { url 'https://maven.aliyun.com/nexus/content/groups/public/' }
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+
+    }
+}
+
+// 插件定义(需结合 apply 使用)
+plugins {
+    id 'idea'
+    id 'java'
+    id 'org.jetbrains.kotlin.jvm' version '1.9.0'
+    id 'org.jetbrains.kotlin.plugin.spring' version '1.9.0'
+}
+
+
+// 指定gradle版本
+wrapper {
+    gradleVersion = '7.6' // version required
+}
+
+
+allprojects {
+    // this is must
+    apply plugin: 'java'
+    apply plugin: 'idea'
+    apply plugin: 'org.jetbrains.kotlin.jvm'
+    apply plugin: 'org.jetbrains.kotlin.plugin.spring'
+
+    // 项目信息
+    group 'io.github.alice52'
+    version '1.0-SNAPSHOT'
+
+    // 指定jdk兼容的最低版本
+    sourceCompatibility = this.jdk_version
+    targetCompatibility = this.jdk_version
+
+    // 全局配置: 编码格式
+    [compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'
+    // 全局配置: java 编译参数
+    compileJava {
+        options.compilerArgs = ['-Amapstruct.suppressGeneratorTimestamp=true',
+                                '-Amapstruct.suppressGeneratorVersionInfoComment=true',
+                                '-parameters']
+    }
+    // 全局配置: kt 编译参数
+    kotlin {
+        compileKotlin {
+            kotlinOptions {
+                freeCompilerArgs += "-Xjsr305=strict"
+                jvmTarget = this.jdk_version
+            }
+        }
+    }
+
+    repositories {
+        maven { url = uri("https://maven.aliyun.com/nexus/content/groups/public/") }
+        maven { url = uri("https://maven.aliyun.com/repository/gradle-plugin") }
+        mavenCentral()
+    }
+
+
+}
+
+subprojects {
+    dependencies {
+        implementation 'javax.annotation:javax.annotation-api:1.3.2'
+        compileOnly "org.projectlombok:lombok:$lombok_version"
+        implementation "org.slf4j:slf4j-api:$slf4j_version"
+        implementation "ch.qos.logback:logback-classic:$logback_version"
+        implementation "ch.qos.logback:logback-core:$logback_version"
+        implementation "cn.hutool:hutool-all:$hutool_version"
+
+        annotationProcessor "org.projectlombok:lombok:$lombok_version"
+        annotationProcessor "org.mapstruct:mapstruct-processor:$mapstruct_version"
+    }
+}
+
+test {
+    useJUnitPlatform()
+}

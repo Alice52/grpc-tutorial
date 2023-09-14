@@ -1,0 +1,19 @@
+plugins {
+    id("org.springframework.boot") version "2.7.14"
+    id("io.spring.dependency-management") version "1.0.15.RELEASE"
+}
+
+description = "grpc-client"
+
+dependencies {
+    // common
+    implementation(project(":grpc-common"))
+    implementation "io.github.alice52:swagger-2:0.0.1"
+
+    // grpc starter
+    implementation 'net.devh:grpc-client-spring-boot-starter:2.14.0.RELEASE'
+
+    // spring
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+}
