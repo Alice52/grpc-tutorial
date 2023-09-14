@@ -19,6 +19,6 @@ func NewEnumMessage() *enumpb.EnumMessage {
         Gender: enumpb.Gender_FEMALE,
     }
     em.Gender = enumpb.Gender_MALE
-    
+
     return &em
 }

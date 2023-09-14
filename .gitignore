@@ -1,3 +1,5 @@
+!**/.gitignore
+
 # Binaries for programs and plugins
 *.exe
 *.exe~
@@ -84,7 +86,6 @@ mvnw.cmd
 /nbdist/
 /.nb-gradle/
 /bin/
-
 
 ## python
 # Byte-compiled / optimized / DLL files
@@ -196,9 +197,6 @@ venv.bak/
 # mypy
 .mypy_cache/
 
-
-
-
 # my
 .settings/
 .project
@@ -269,3 +267,4 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+**/.DS_Store

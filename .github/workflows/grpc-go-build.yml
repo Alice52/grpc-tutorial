@@ -1,0 +1,51 @@
+name: Build Grpc Go Tutorial
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'go-tutorials/**'
+      - '.github/workflows/grpc-go-build.yml'
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, 'ci skip')"
+    strategy:
+      matrix:
+        go-version: [1.18]
+    env: # define constant
+      PROJECT_PREFIX: go-tutorials
+      PROJECT_NAME: cn.edu.ntu.grpc.go
+
+    steps:
+      - name: Export Global Var
+        run: |
+          echo "ALI_DOCKER_REGISTRY=${{ secrets.ALI_DOCKER_HUB_REGISTRY }}" >> $GITHUB_ENV
+          echo "ALI_DOCKER_USERNAME=${{ secrets.ALI_DOCKER_REGISTRY_USERNAME }}" >> $GITHUB_ENV
+          echo "ALI_DOCKER_PASSWORD=${{ secrets.ALI_DOCKER_REGISTRY_PASSWORD }}" >> $GITHUB_ENV
+          echo "JASYPT_ENCRYPTOR_PASSWORD=${{ secrets.JASYPT_ENCRYPTOR_PASSWORD }}" >> $GITHUB_ENV
+          echo "PROJECT_HOME=$PWD" >> $GITHUB_ENV
+          echo "TAG=`echo \`date +%Y%m%d\`.${GITHUB_SHA} | cut -c1-16`" >> $GITHUB_ENV
+
+      - name: Checkout Code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Set up Go ${{ matrix.go-version }}
+        uses: actions/setup-go@v1
+        with:
+          go-version: ${{ matrix.go-version }}
+        id: go
+
+      - name: Download dependencies
+        run: |
+          cd $PROJECT_HOME/$PROJECT_PREFIX/$PROJECT_NAME
+          go get -v -t -d ./...
+
+      - name: Build All Module
+        run: |
+          cd $PROJECT_HOME/$PROJECT_PREFIX/$PROJECT_NAME
+          go build -v -race ./...

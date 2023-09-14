@@ -1,0 +1,54 @@
+name: Build Grpc Java Tutorial
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'java-tutorials/**'
+      - '.github/workflows/grpc-java-build.yml'
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, 'ci skip')"
+    strategy:
+      matrix:
+        java: ["8", "11", "17"]
+    env: # define constant
+      PROJECT_PREFIX: java-tutorials
+      PROJECT_NAME: boot-grpc
+
+    steps:
+      - name: Export Global Var
+        run: |
+          echo "ALI_DOCKER_REGISTRY=${{ secrets.ALI_DOCKER_HUB_REGISTRY }}" >> $GITHUB_ENV
+          echo "ALI_DOCKER_USERNAME=${{ secrets.ALI_DOCKER_REGISTRY_USERNAME }}" >> $GITHUB_ENV
+          echo "ALI_DOCKER_PASSWORD=${{ secrets.ALI_DOCKER_REGISTRY_PASSWORD }}" >> $GITHUB_ENV
+          echo "JASYPT_ENCRYPTOR_PASSWORD=${{ secrets.JASYPT_ENCRYPTOR_PASSWORD }}" >> $GITHUB_ENV
+          echo "PROJECT_HOME=$PWD" >> $GITHUB_ENV
+          echo "TAG=`echo \`date +%Y%m%d\`.${GITHUB_SHA} | cut -c1-16`" >> $GITHUB_ENV
+
+      - name: Checkout Code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK ${{ matrix.Java }}
+        uses: actions/setup-java@v3
+        with:
+          java-version: ${{ matrix.java }}
+          distribution: "zulu"
+
+      - name: Cache Gradle Packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+          restore-keys: ${{ runner.os }}-gradle
+
+      - name: Build Gradle Project
+        run: |
+          cd $PROJECT_HOME/$PROJECT_PREFIX/$PROJECT_NAME
+          ./gradlew clean build -x test --console=plain
+

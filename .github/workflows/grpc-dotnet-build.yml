@@ -1,0 +1,58 @@
+name: Build Grpc Dotnet Tutorial
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'dotnet-tutorials/**'
+      - '.github/workflows/grpc-dotnet-build.yml'
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, 'ci skip')"
+    strategy:
+      matrix:
+        dotnet: ["3.1"]
+    env: # define constant
+      PROJECT_PREFIX: dotnet-tutorials
+
+    steps:
+      - name: Export Global Var
+        run: |
+          echo "ALI_DOCKER_REGISTRY=${{ secrets.ALI_DOCKER_HUB_REGISTRY }}" >> $GITHUB_ENV
+          echo "ALI_DOCKER_USERNAME=${{ secrets.ALI_DOCKER_REGISTRY_USERNAME }}" >> $GITHUB_ENV
+          echo "ALI_DOCKER_PASSWORD=${{ secrets.ALI_DOCKER_REGISTRY_PASSWORD }}" >> $GITHUB_ENV
+          echo "JASYPT_ENCRYPTOR_PASSWORD=${{ secrets.JASYPT_ENCRYPTOR_PASSWORD }}" >> $GITHUB_ENV
+          echo "PROJECT_HOME=$PWD" >> $GITHUB_ENV
+          echo "TAG=`echo \`date +%Y%m%d\`.${GITHUB_SHA} | cut -c1-16`" >> $GITHUB_ENV
+
+      - name: Checkout Code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET Core ${{ matrix.dotnet }}
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: ${{ matrix.dotnet }}
+
+      - name: Check Cache
+        id: cache
+        uses: actions/cache@v2
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+
+      - name: Build Dotnet Client Project
+        run: |
+          PROJECT_NAME=GrpcClient
+          cd $PROJECT_HOME/$PROJECT_PREFIX/$PROJECT_NAME
+          dotnet build $PROJECT_NAME.sln
+
+      - name: Build Dotnet Server Project
+        run: |
+          PROJECT_NAME=GrpcServer
+          cd $PROJECT_HOME/$PROJECT_PREFIX/$PROJECT_NAME
+          dotnet build *.sln
