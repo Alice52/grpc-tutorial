@@ -1,0 +1,12 @@
+*
+!*.go
+!*.sum
+!*.mod
+!*.md
+!LICENSE
+!.gitkeep
+!*/static/**
+!*/
+!go.work
+!*.sh
+!*.yml
