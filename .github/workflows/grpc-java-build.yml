@@ -49,6 +49,5 @@ jobs:
 
       - name: Build Gradle Project :boot-grpc
         run: |
-          PROJECT_NAME=boot-starter-grpc
           cd $PROJECT_HOME/$PROJECT_PREFIX/$PROJECT_NAME
           ./gradlew clean build -x test --console=plain
