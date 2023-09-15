@@ -1,0 +1,5 @@
+description = 'boot-starter-grpc'
+
+bootJar {
+    enabled = false
+}

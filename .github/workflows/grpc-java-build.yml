@@ -14,7 +14,7 @@ jobs:
     if: "!contains(github.event.head_commit.message, 'ci skip')"
     strategy:
       matrix:
-        java: ["8", "11", "17"]
+        java: ['8', '11', '17']
     env: # define constant
       PROJECT_PREFIX: java-tutorials
       PROJECT_NAME: boot-grpc
@@ -38,7 +38,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: ${{ matrix.java }}
-          distribution: "zulu"
+          distribution: 'zulu'
 
       - name: Cache Gradle Packages
         uses: actions/cache@v3
@@ -47,8 +47,8 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
           restore-keys: ${{ runner.os }}-gradle
 
-      - name: Build Gradle Project
+      - name: Build Gradle Project :boot-grpc
         run: |
+          PROJECT_NAME=boot-starter-grpc
           cd $PROJECT_HOME/$PROJECT_PREFIX/$PROJECT_NAME
           ./gradlew clean build -x test --console=plain
-

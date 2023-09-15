@@ -1,5 +1,18 @@
-rootProject.name = "boot-grpc"
+pluginManagement {
+    repositories {
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
 
-include 'grpc-common'
-include 'grpc-client'
-include 'grpc-server'
+rootProject.name = 'boot-grpc'
+
+include 'boot-raw-grpc'
+include 'boot-raw-grpc:grpc-common'
+include 'boot-raw-grpc:grpc-client'
+
+include 'boot-starter-grpc'
+include 'boot-starter-grpc:grpc-common'
+include 'boot-starter-grpc:grpc-client'
+include 'boot-starter-grpc:grpc-server'
+

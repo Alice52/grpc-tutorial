@@ -1,0 +1,55 @@
+plugins {
+    id "com.google.protobuf" version "${plugin_protobuf_version}"
+}
+
+description = "grpc-common"
+bootJar {
+    enabled = false
+}
+
+dependencies {
+    implementation "com.google.protobuf:protobuf-java:${protobuf_java_version}"
+
+    // grpc
+    implementation "io.grpc:grpc-netty-shaded:$grpc_version"
+    implementation "io.grpc:grpc-protobuf:$grpc_version"
+    implementation "io.grpc:grpc-stub:$grpc_version"
+}
+
+sourceSets {
+    main {
+        proto {
+            srcDirs 'src/main/resources'
+        }
+    }
+}
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:${protobuf_java_version}"
+    }
+    plugins {
+        grpc {
+            artifact = "io.grpc:protoc-gen-grpc-java:$grpc_version"
+        }
+    }
+    generateProtoTasks {
+        all().each { task ->
+            task.builtins {
+                java {
+                    // 默认是         生成 message 继承 GeneratedMessageV3
+                    // option 'lite': 生成 message 继承 GeneratedMessageLite
+                }
+            }
+            task.plugins {
+                grpc {}
+            }
+        }
+    }
+}
+
+tasks.withType(Copy).configureEach {
+    filesMatching("**/*.proto") {
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    }
+}

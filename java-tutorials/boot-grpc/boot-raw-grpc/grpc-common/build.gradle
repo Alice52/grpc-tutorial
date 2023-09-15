@@ -3,6 +3,10 @@ plugins {
 }
 
 description = "grpc-common"
+bootJar {
+    enabled = false
+}
+
 dependencies {
     implementation "com.google.protobuf:protobuf-java:${protobuf_java_version}"
 
@@ -11,7 +15,6 @@ dependencies {
     implementation "io.grpc:grpc-protobuf:$grpc_version"
     implementation "io.grpc:grpc-stub:$grpc_version"
 }
-
 
 sourceSets {
     main {

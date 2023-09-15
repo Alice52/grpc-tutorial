@@ -1,0 +1,18 @@
+description = "grpc-client"
+bootJar {
+    enabled = false
+}
+
+dependencies {
+    // common
+    implementation(project(":boot-raw-grpc:grpc-common"))
+
+    // spring
+    api('org.springframework.boot:spring-boot-starter-web') {
+        exclude module: 'spring-boot-starter-tomcat'
+    }
+    api 'org.springframework.boot:spring-boot-starter-undertow'
+    api 'org.springframework.boot:spring-boot-starter-actuator'
+    api 'org.springframework.boot:spring-boot-starter-validation'
+    api 'jakarta.validation:jakarta.validation-api'
+}

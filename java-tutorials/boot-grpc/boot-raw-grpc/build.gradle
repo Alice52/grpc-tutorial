@@ -1,0 +1,5 @@
+description = 'boot-raw-grpc'
+
+bootJar {
+    enabled = false
+}
